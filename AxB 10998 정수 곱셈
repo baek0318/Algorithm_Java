@@ -1,0 +1,13 @@
+import java.util.Scanner;
+
+public class Algorithm {
+    public static void main(String[] args) {
+        Scanner scr = new Scanner(System.in);
+        int a, b;
+        a = scr.nextInt();
+        b = scr.nextInt();
+        System.out.println(a*b);
+    }
+}
+
+//클래스 이름을 Main으로 해주어야한다 아니면 컴파일 에러 발생!!
