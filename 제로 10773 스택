@@ -1,0 +1,37 @@
+import java.io.*;
+
+public class Main {
+    int size = -1;
+    final int MAX_ELEMENT = 100000;
+    int data[] = new int[MAX_ELEMENT];
+
+    public void push(int element) {
+        data[++size] = element;
+    }
+
+    public void pop() {
+       data[size] = 0;
+       size--;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Main stack = new Main();
+        int result = 0;
+        int input = Integer.parseInt(br.readLine());
+        for(int i = 0; i < input; i++) {
+            int input1 = Integer.parseInt(br.readLine());
+            if (input1 != 0) {
+                stack.push(input1);
+            }else {
+                stack.pop();
+            }
+        }
+        for(int i = 0; i <= stack.size; i++) {
+            result += stack.data[i];
+        }
+        System.out.println(result);
+
+
+    }
+}
