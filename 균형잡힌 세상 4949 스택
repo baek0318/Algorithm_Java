@@ -1,0 +1,85 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Main {
+    int size = -1;
+    final int MAX_ELEMENT = 100;
+    String data[] = new String[MAX_ELEMENT];
+
+    public void push(String element) {
+        data[++size] = element;
+    }
+
+    public void pop() {
+       --size;
+    }
+
+    public boolean is_empty() {
+        if (size == -1) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList list = new ArrayList();
+        while (true) {
+            String str = br.readLine();
+            Main stack = new Main();
+            for(int j = 0; j < str.length(); j++) {
+                if(str.substring(j,j+1).contains("(") || str.substring(j,j+1).contains(")") || str.substring(j,j+1).contains("[") || str.substring(j,j+1).contains("]") || str.substring(j,j+1).contains(".")){
+                    stack.push(str.substring(j,j+1));
+                    if(stack.data[stack.size].contains("(")) {
+                        if(j+1 != str.length()) {
+                            if(str.charAt(j+1) == ')'){
+                                stack.pop();
+                                j++;
+                            }
+                        }
+                    }
+                    else if(stack.data[stack.size].contains(")")) {
+                        if(j==0 || stack.size-1 == -1) {
+                            break;
+                        }else if(stack.data[stack.size-1].contains("(")) {
+                            stack.pop();
+                            stack.pop();
+                        }
+                    }
+                    else if(stack.data[stack.size].contains("[")) {
+                        if(j+1 != str.length()) {
+                            if(str.charAt(j+1) == ']'){
+                                stack.pop();
+                                j++;
+                            }
+                        }
+                    }
+                    else if(stack.data[stack.size].contains("]")) {
+                        if(j==0 || stack.size-1 == -1) {
+                            break;
+                        }else if(stack.data[stack.size-1].contains("[")) {
+                            stack.pop();
+                            stack.pop();
+                        }
+                    }
+                }
+            }
+
+            if (str.length() == 1 && str.contains(".")) {
+                break;
+            }
+            if (stack.data[0].contains(".")) {
+                list.add("yes");
+            }else {
+                list.add("no");
+            }
+        }
+
+        Iterator iter = list.iterator();
+        while(iter.hasNext()) {
+            System.out.println(iter.next());
+        }
+    }
+}
