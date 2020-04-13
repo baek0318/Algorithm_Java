@@ -1,0 +1,74 @@
+import java.util.*;
+
+class Heap {
+
+    int data[];
+    int size;
+
+    public Heap(int input) {
+        this.data = new int[input+1];
+        this.size = 0;
+    }
+    void insert(int input) {
+        int i;
+        this.data[++size] = input;
+        i = size;
+
+        while((i > 1) && (this.data[i] < this.data[i/2])) {
+            swap(i,i/2);
+            i /= 2;
+        }
+    }
+    int delete() {
+        int top = this.data[1];
+        this.data[1] = this.data[size--];
+        int i = 1;
+
+        while(i < size/2+1) {
+            if(this.data[i*2] > this.data[i] && this.data[i*2+1] > this.data[i]) {
+                break;
+            }
+            else if(this.data[i*2] < this.data[i*2+1]) {
+                swap(i,i*2);
+                i = i*2;
+            }else {
+                swap(i,i*2+1);
+                i = i*2+1;
+            }
+        }
+
+        return top;
+    }
+
+    private void swap(int pre, int top) {
+        int tmp = this.data[top];
+        this.data[top] = this.data[pre];
+        this.data[pre] = tmp;
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
+        int result[] = new int[input];
+        Heap heap = new Heap(input);
+
+        for(int i = 0; i < input; i++) {
+            //입력하며 insert
+            int ins = sc.nextInt();
+            heap.insert(ins);
+        }
+
+        for (int i = 0; i < input; i++) {
+            //delete 하며 result에 저장
+            result[i] = heap.delete();
+        }
+
+        for (int i = 0; i < input; i++) {
+            //하나씩 출력
+            System.out.println(result[i]);
+        }
+    }
+}
