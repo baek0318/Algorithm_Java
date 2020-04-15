@@ -1,0 +1,49 @@
+import java.io.*;
+
+class Counting {
+    void countingSort(int arr[], int arr2[]) {
+        int count[] = new int[10001];
+        int countSum[] = new int[10001];
+        int countnum = 0;
+
+        for(int i = 0; i < arr.length; i++) {
+            int num = arr[i];
+            count[num] += 1;
+        }
+        for(int i = 0; i < count.length; i++) {
+            if(count[i] != 0) {
+                countSum[i] = count[i] + countSum[countnum];
+                countnum = i;
+            }
+        }
+        for (int i = 0; i < arr2.length; i++) {
+            arr2[countSum[arr[i]]-1] = arr[i];
+            countSum[arr[i]]--;
+        }
+
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        Counting co = new Counting();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int input = Integer.parseInt(br.readLine());
+        int fir_arr[] = new int[input];
+        int sec_arr[] = new int[input];
+
+        for(int i = 0; i < input; i++) {
+            fir_arr[i] = Integer.parseInt(br.readLine());
+        }
+
+        co.countingSort(fir_arr, sec_arr);
+
+        for(int i = 0; i < input; i++) {
+            bw.write(sec_arr[i]+"\n");
+        }
+        bw.flush();
+        bw.close();
+    }
+}
