@@ -1,0 +1,64 @@
+import java.io.*;
+
+class Queue {
+    int front, rear, data[];
+    int MAX_SIZE = 500000;
+
+    Queue() {
+        front = 0;
+        rear = 0;
+        data = new int[MAX_SIZE];
+    }
+
+    void add(int element){
+        rear = (rear+1)%MAX_SIZE;
+        data[rear] = element;
+    }
+
+    int poll(){
+        front = (front+1)%MAX_SIZE;
+        return data[front];
+    }
+
+    int size() {
+        return rear-front;
+    }
+
+    int peek() {
+        return data[front+1];
+    }
+}
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        Queue queue = new Queue();
+
+        int input = Integer.parseInt(br.readLine());
+        for(int num = 1; num <= input; num++){
+            queue.add(num);
+        }
+
+        if(queue.size() == 1){
+            bw.write(queue.peek()+"\n");
+            bw.flush();
+            bw.close();
+            return;
+        }
+
+        while(queue.size() != 1) {
+            queue.poll();
+            if(queue.size() == 1){
+                bw.write(queue.peek()+"\n");
+                bw.flush();
+                bw.close();
+                break;
+            }else{
+                queue.add(queue.poll());
+            }
+
+        }
+
+    }
+}
