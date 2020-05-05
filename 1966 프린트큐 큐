@@ -1,0 +1,57 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        ArrayList<Integer> list = new ArrayList<>();
+
+        int testCase = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < testCase; i++){
+            Queue<Integer> priority_queue = new LinkedList<>();
+            Queue<Integer> queue = new LinkedList<>();
+
+            String base = br.readLine();
+            String[] base_arr = base.split(" ");
+            int paperCount = Integer.parseInt(base_arr[0]);
+            int position = Integer.parseInt(base_arr[1]);
+            String priority = br.readLine();
+            String[] priority_arr = priority.split(" ");
+            int count = 0;
+            for(int j = 0 ; j < paperCount; j++){
+                priority_queue.add(Integer.parseInt(priority_arr[j]));
+                queue.add(j);
+            }
+
+            while(true){
+                int priority_dequeue = priority_queue.poll();
+                int dequeue = queue.poll();
+                int max = priority_queue.stream().max(Integer::compareTo).orElse(-1);
+                if(priority_dequeue < max){
+                    queue.add(dequeue);
+                    priority_queue.add(priority_dequeue);
+                }else{
+                    count++;
+                    if(dequeue == position){
+                        break;
+                    }
+                }
+            }
+            list.add(count);
+        }
+
+        Iterator<Integer> iter = list.iterator();
+        while(iter.hasNext()){
+            bw.write(iter.next()+"\n");
+            bw.flush();
+        }
+
+    }
+
+}
