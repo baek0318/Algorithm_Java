@@ -1,0 +1,124 @@
+import java.io.*;
+import java.util.*;
+
+class Deque {
+
+    int data[], forward, rear;
+    int MAX_SIZE = 10000;
+    int count;
+    
+    Deque() {
+        data = new int[MAX_SIZE];
+        forward = 0;
+        rear = 0;
+        count=0;
+    }
+
+    void push_front(int element) {
+        data[forward] = element;
+        forward = (forward-1+MAX_SIZE)%MAX_SIZE;
+        count++;
+    }
+
+    int pop_front() {
+        if(empty() == 1){
+            return -1;
+        }else {
+            forward = (forward+1)%MAX_SIZE;
+            count--;
+            return data[forward];
+        }
+
+    }
+
+    void push_back(int element) {
+        rear = (rear+1)%MAX_SIZE;
+        count++;
+        data[rear] = element;
+    }
+
+    int pop_back() {
+        if(empty() == 1){
+            return -1;
+        }else {
+            int value = data[rear];
+            rear = (rear-1+MAX_SIZE)%MAX_SIZE;
+            count--;
+            return value;
+        }
+
+    }
+
+    int size() {
+        return count;
+    }
+
+    int empty() {
+        if (forward == rear){
+            return 1;
+        }else {
+            return 0;
+        }
+    }
+
+    int front() {
+        if(empty() == 1){
+            return -1;
+        }else {
+            return data[(forward+1)%MAX_SIZE];
+        }
+    }
+
+    int back() {
+        if(empty() == 1){
+            return -1;
+        }else {
+            return data[rear];
+        }
+    }
+
+}
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        ArrayList<Integer> list = new ArrayList<>();
+        Deque deque = new Deque();
+        int count = Integer.parseInt(br.readLine());
+
+        for(int i = 0; i < count; i++){
+            String str = br.readLine();
+            String[] arr = str.split(" ");
+            String input_str = arr[0];
+
+            if(input_str.contains("push_front")){
+                deque.push_front(Integer.parseInt(arr[1]));
+            }else if(input_str.contains("push_back")){
+                deque.push_back(Integer.parseInt(arr[1]));
+            }else if(input_str.contains("pop_front")){
+                list.add(deque.pop_front());
+            }else if(input_str.contains("pop_back")){
+                list.add(deque.pop_back());
+            }else if(input_str.contains("size")){
+                list.add(deque.size());
+            }else if(input_str.contains("empty")){
+                list.add(deque.empty());
+            }else if(input_str.contains("front")){
+                list.add(deque.front());
+            }else if(input_str.contains("back")) {
+                list.add(deque.back());
+            }
+        }
+
+        Iterator<Integer> iter = list.iterator();
+
+        while(iter.hasNext()){
+            bw.write(iter.next()+"\n");
+            bw.flush();
+        }
+        bw.close();
+    }
+
+}
