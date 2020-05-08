@@ -1,0 +1,79 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        Deque<Integer> deque1 = new LinkedList<>();
+        Deque<Integer> deque2 = new LinkedList<>();
+        int count = 0;
+
+        String str_input = br.readLine();
+        String[] arr_input = str_input.split(" ");
+        int total = Integer.parseInt(arr_input[0]); //큐의 크기
+        int peek_num = Integer.parseInt(arr_input[1]); //뽑아야 하는 수의 갯수
+
+        String str_position = br.readLine();
+        String[] arr_position = str_position.split(" "); //뽑아야 하는 수의 위치
+
+        for(int i = 1; i <= total; i++){
+            deque1.add(i);
+            deque2.add(i);
+        }
+        int first1 = deque2.removeFirst();
+        deque2.addLast(first1);
+
+        for(int i = 0; i < peek_num; i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            int count1 = 0;
+            int count2 = 0;
+            while(true){
+                int num1 = deque1.removeFirst();
+
+                if(num1 == Integer.parseInt(arr_position[i])){
+                    list.add(count1);
+                    break;
+                }else{
+                    deque1.addLast(num1);
+                    ++count1;
+                }
+            }
+
+            while(true){
+                int num2 = deque2.removeLast();
+
+                if(num2 == Integer.parseInt(arr_position[i])){
+                    list.add(count2);
+                    break;
+                }else{
+                    deque2.addFirst(num2);
+                    ++count2;
+                }
+
+            }
+            int min = list.stream().min(Integer::compareTo).orElse(-1);
+            //큐를 2개 사용하기때문에 하나를 사용하는것과 같이 만들어 줘야한다
+            if(min == list.get(0)){
+                if(deque2.size() >= 2){
+                    int first = deque2.removeFirst();
+                    deque2.addLast(first);
+                }
+            }else if(min == list.get(1)){
+                if(deque1.size() >= 2){
+                    int first = deque2.removeFirst();
+                    deque2.addLast(first);
+                }
+            }
+            count += min;
+        }
+
+        bw.write(count+"\n");
+        bw.flush();
+        bw.close();
+
+    }
+
+}
