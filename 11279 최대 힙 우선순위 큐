@@ -1,0 +1,37 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Queue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
+        ArrayList<Integer> list = new ArrayList<>();
+
+        int testCase = Integer.parseInt(br.readLine()); //테스트 케이스를 입력
+
+        for(int i = 0; i < testCase; i++){
+            int input = Integer.parseInt(br.readLine()); //연산을 입력한다
+            if(input == 0){
+                Object pop = queue.poll();
+                if(pop == null){
+                    list.add(0);
+                }else{
+                    list.add(Integer.parseInt(pop.toString()));
+                    // object 타입을 int로 캐스팅하기 위해서는 object.toString으로 해줘야한다 
+                }
+            }else {
+                queue.add(input);
+            }
+        }
+
+        Iterator<Integer> iter = list.iterator();
+        while(iter.hasNext()){
+            bw.write(iter.next()+"\n");
+            bw.flush();
+        }
+        bw.close();
+    }
+
+}
