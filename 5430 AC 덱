@@ -1,0 +1,79 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<String> list = new ArrayList<>();
+        int testCase = Integer.parseInt(br.readLine()); //테스트 케이스 입력
+
+        for(int i = 0; i < testCase; i++){
+            int toggle = 0;
+            Deque<String> deque = new LinkedList<>(); //deque 선언
+            String implement_str = br.readLine(); // 수행할 연산
+            int deque_size = Integer.parseInt(br.readLine()); // 데이터의 사이즈
+            String element_str = br.readLine(); // 원소의 종류
+            String element_sub = element_str.substring(1,element_str.length()-1);
+            //substring을 통해서 문자열 처음, 끝 삭제
+            String[] element_arr = element_sub.split(",");
+
+            //덱에 데이터 추가하기
+            for(int j = 0; j < deque_size; j++){
+                deque.add(element_arr[j]);
+            }
+            String data = "[";
+            for(int j = 0; j < implement_str.length(); j++){
+                if(implement_str.charAt(j) == 'R'){
+                    if(toggle == 0){
+                        toggle = 1;
+                    }else if(toggle == 1){
+                        toggle = 0;
+                    }
+                }else if(implement_str.charAt(j) == 'D'){
+                    if(toggle == 1){
+                        String num = deque.pollLast();
+                        if (num == null){
+                            String sub = data.substring(0, 0);
+                            data = sub+"error";
+                            break;
+                        }
+                    }else if(toggle == 0){
+                        String num = deque.pollFirst();
+                        if (num == null){
+                            String sub = data.substring(0, 0);
+                            data = sub+"error";
+                            list.add(data);
+                            break;
+                        }
+                    }
+                }
+            }
+            int sizeof = deque.size();
+            if(toggle == 0){
+                for(int j = 0; j < sizeof; j++){
+                    String num = deque.poll();
+                    data = data+num+",";
+                }
+            }else if(toggle == 1){
+                for(int j = 0; j < sizeof; j++){
+                    String num = deque.pollLast();
+                    data = data+num+",";
+                }
+            }
+            if(data.charAt(data.length()-1) == ','){
+                String sub = data.substring(0, data.length()-1);
+                sub = sub+"]";
+                list.add(sub);
+            }
+        }
+
+        Iterator<String> iter = list.iterator();
+        while(iter.hasNext()){
+            bw.write(iter.next()+"\n");
+            bw.flush();
+        }
+    }
+
+}
