@@ -1,0 +1,36 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] t = new int[n+1];
+        int[] p = new int[n+1];
+        int[] sum_p = new int[n+1];
+        int max = 0;
+
+        for (int i = 1; i <= n; i++){
+            String str = br.readLine();
+            String[] arr = str.split(" ");
+            t[i] = Integer.parseInt(arr[0]);
+            p[i] = Integer.parseInt(arr[1]);
+        }
+
+        for (int i = 1; i <= n; i++){
+            for (int j = 1; j <= i; j++) {
+                if (t[j] + (j - 1) <= i) {
+                    if (sum_p[i] < sum_p[j - 1] + p[j]) {
+                        sum_p[i] = sum_p[j - 1] + p[j];
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i <= n; i++){
+            if(max < sum_p[i]) { max = sum_p[i];}
+        }
+
+        System.out.println(max);
+    }
+}
