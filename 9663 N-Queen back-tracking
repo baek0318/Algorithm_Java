@@ -1,0 +1,55 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static int ans, n;
+    static int[] col; //열을 채우는 배열이다 
+    Scanner sc = new Scanner(System.in);
+
+    void solve() {
+        n = sc.nextInt();
+
+        for (int i = 1; i <= n; i++) {
+            col = new int[15];
+            col[1] = i;
+            dfs(1);
+        }
+        System.out.println(ans);
+    }
+
+    public static void dfs(int row) {
+        if (row == n) {
+            ++ans;
+        } else {
+            for (int i = 1; i <= n; i++) {
+                col[row + 1] = i;
+                if (isPossible(row + 1)) {
+                    dfs(row + 1);
+                } else {
+                    col[row + 1] = 0;
+                }
+            }
+        }
+        col[row] = 0;
+    }
+
+    public static boolean isPossible(int c) {
+
+        for (int i = 1; i < c; i++) {
+
+            if (col[i] == col[c]) {
+                return false;
+            }
+
+            if (Math.abs(col[i] - col[c]) == Math.abs(i - c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Main m = new Main();
+        m.solve();
+    }
+}
