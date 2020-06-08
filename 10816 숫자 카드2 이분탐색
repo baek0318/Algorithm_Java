@@ -1,0 +1,56 @@
+import java.io.*;
+import java.util.Arrays;
+
+public class Main {
+
+    static int lowerFind(int num, int arr[]){
+        int start = 0;
+        int end = arr.length-1;
+        while (start<=end){
+            int mid = (start+end)/2;
+            if (arr[mid] >= num){
+                end = mid-1;
+            }else {
+                start = mid+1;
+            }
+        }
+        return start;
+    }
+
+    static int upperFind(int num, int arr[]){
+        int start = 0;
+        int end = arr.length-1;
+        while (start<=end){
+            int mid = (start+end)/2;
+            if (arr[mid] <= num){
+                start = mid+1;
+            }else {
+                end = mid-1;
+            }
+        }
+        return end;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(br.readLine());
+        String[] arr1_s = br.readLine().split(" ");
+        int[] arr1 = Arrays.stream(arr1_s).mapToInt(Integer::parseInt).toArray();
+        int m = Integer.parseInt(br.readLine());
+        String[] arr2_s = br.readLine().split(" ");
+        int[] arr2 = Arrays.stream(arr2_s).mapToInt(Integer::parseInt).toArray();
+        Arrays.sort(arr1);
+
+        for(int i = 0; i < arr2.length; i++){
+            int low = lowerFind(arr2[i], arr1);
+            int high = upperFind(arr2[i], arr1);
+            bw.write(high-low+1+" ");
+        }
+        bw.write("\n");
+        bw.flush();
+        bw.close();
+    }
+
+}
