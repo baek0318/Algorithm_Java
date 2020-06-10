@@ -1,0 +1,47 @@
+import java.io.*;
+import java.util.Arrays;
+
+public class Main {
+
+    static long cal(long height, long len, long woods[]){
+        long sum = 0;
+        for(int i = 0; i < len; i++){
+            long diff = woods[i] - height;
+            if (diff >= 0){
+                sum += diff;
+            }
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] input = br.readLine().split(" ");
+        long n = Long.parseLong(input[0]);
+        long m = Long.parseLong(input[1]);
+        String[] arr = br.readLine().split(" ");
+        long[] woods = Arrays.stream(arr).mapToLong(Long::parseLong).toArray();
+
+        long high = Arrays.stream(woods).max().orElse(Long.MIN_VALUE);
+        long low = 1;
+        long answer = 0;
+
+        while (low <= high){
+            long mid = (high+low)/2;
+            long result = cal(mid, n, woods);
+            if (result >= m){
+                low =  mid+1;
+                if (mid > answer){
+                    answer = mid;
+                }
+            }else {
+                high = mid-1;
+            }
+        }
+        bw.write(answer+"\n");
+        bw.flush();
+        bw.close();
+    }
+
+}
